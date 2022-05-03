@@ -33,32 +33,22 @@ export default function Home({results}) {
   const router = useRouter();
 
   const onClick = (id, title) => {
-    router.push({
-      pathname: `/movies/${id}`,
-      query: {
-        title
-      }
-    },
-    `/movies/${id}`
-    );
-  }
+    router.push(`/movies/${title}/${id}`);
+  };
 
   return (
     <div>
       <StyledDiv>
         <Seo title="Home" />
         {results?.map((movie) => (
-          <div onClick={() => onClick(movie.id, movie.original_title)} key={movie.id}>
+          <div 
+            onClick={() => onClick(movie.id, movie.original_title)}
+            key={movie.id}
+          >
             <div>
               <MovieImg src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
               <Link              
-                href={{
-                  pathname: `/movies/${movie.id}`,
-                  query: {
-                    title: movie.original_title
-                  }
-                }}
-                as={`/movies/${movie.id}`}                  
+                href={`/movies/${movie.original_title}/${movie.id}`}                  
                 passHref
               >
                 <MovieA>{movie.original_title}</MovieA>
