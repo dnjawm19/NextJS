@@ -18,8 +18,9 @@ const StyledImg = styled.img`
     margin-bottom: 5px;
 `
 
-const StyledLink = styled.a`
-    padding: 0rem 2rem;
+const Wrapper = styled.div`
+    display: flex;
+    gap: 10px
 `
 
 export default function NavBar() {
@@ -33,12 +34,14 @@ export default function NavBar() {
     return (
         <Nav>
             <StyledImg src="/vercel.svg" />
-            <Link href="/" passHref>
-                <StyledA>Home</StyledA>
-            </Link>
-            <Link href="/about" passHref>
-                <StyledA>about</StyledA>
-            </Link>
+            <Wrapper>
+                <Link href="/" passHref>
+                    <StyledA>Home</StyledA>
+                </Link>
+                <Link href="/about" passHref>
+                    <StyledA>about</StyledA>
+                </Link>
+            </Wrapper>
         </Nav>
     )
 }

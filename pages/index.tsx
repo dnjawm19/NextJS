@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Seo from "../components/Seo";
 import { GetServerSideProps } from "next";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const StyledDiv = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding: 20px;
   gap: 20px;
+  cursor: pointer;
 `
 
 const MovieImg = styled.img`
@@ -21,24 +24,47 @@ const MovieImg = styled.img`
   }
 `
 
-const MovieH4 = styled.h4`
+const MovieA = styled.h4`
   font-size: 18px;
   text-align: center;
 `
 
 export default function Home({results}) {
+  const router = useRouter();
+
+  const onClick = (id, title) => {
+    router.push({
+      pathname: `/movies/${id}`,
+      query: {
+        title
+      }
+    },
+    `/movies/${id}`
+    );
+  }
 
   return (
     <div>
       <StyledDiv>
         <Seo title="Home" />
         {results?.map((movie) => (
-          <div key={movie.id}>
-            <div className="movie" key={movie.id}>
-            <MovieImg src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
-            <MovieH4>{movie.original_title}</MovieH4>
-            </div>
-          </div>          
+          <div onClick={() => onClick(movie.id, movie.original_title)} key={movie.id}>
+            <div>
+              <MovieImg src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
+              <Link              
+                href={{
+                  pathname: `/movies/${movie.id}`,
+                  query: {
+                    title: movie.original_title
+                  }
+                }}
+                as={`/movies/${movie.id}`}                  
+                passHref
+              >
+                <MovieA>{movie.original_title}</MovieA>
+              </Link>
+              </div>
+            </div>                
         ))}
       </StyledDiv>
     </div>
