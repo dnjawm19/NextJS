@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Seo from "../components/Seo";
+import { GetServerSideProps } from "next";
 
 const StyledDiv = styled.div`
   display: grid;
@@ -25,24 +26,13 @@ const MovieH4 = styled.h4`
   text-align: center;
 `
 
-export default function Home() {
-  const [movies, setMovies] = useState();
-
-  useEffect(() => {
-    (async () => {
-      const {results} = await (await fetch(
-        `/api/movies`
-      )).json();
-      setMovies(results);
-    })();
-  }, []);
+export default function Home({results}) {
 
   return (
     <div>
       <StyledDiv>
         <Seo title="Home" />
-        {!movies && <h4>Loading...</h4>}
-        {movies?.map((movie) => (
+        {results?.map((movie) => (
           <div key={movie.id}>
             <div className="movie" key={movie.id}>
             <MovieImg src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
@@ -53,4 +43,16 @@ export default function Home() {
       </StyledDiv>
     </div>
   )
+}
+
+export async function getServerSideProps() {
+  const {results} = await (await fetch(
+    `http://localhost:3000/api/movies`
+  )).json();
+
+  return {
+    props: {
+      results
+    }
+  }
 }
